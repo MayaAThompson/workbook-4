@@ -12,7 +12,7 @@ public class Employee {
     private double payRate;
     private double hoursWorked;
     private boolean isWorking;
-    private LocalTime clockInTime;
+    private double clockInTime;
 
     public Employee(int employeeId, String name, String department, double payRate) {
         this.employeeId = employeeId;
@@ -74,36 +74,28 @@ public class Employee {
     //endregion
 
     public void punchTimeCard(double time) {
-        LocalTime timeClock;
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
-        timeClock = LocalTime.parse(Double.toString(time), timeFormatter);
-        if (!this.isWorking) {
-            this.clockInTime = timeClock;
-            this.isWorking = true;
+        if (!isWorking) {
+            clockInTime = time;
+            isWorking = true;
         }
         else {
-            Duration duration = Duration.between(clockInTime, timeClock);
-            long hours = duration.toHours();
-            long minutes = duration.toMinutes();
-            double timeWorked = Double.parseDouble(hours + "." + minutes);
-            hoursWorked += timeWorked;
-            this.isWorking = false;
+            hoursWorked += time - clockInTime;
+            isWorking = false;
         }
     }
 
     public void punchTimeCard() {
         LocalTime timeClock = LocalTime.now();
+        double hour = timeClock.getHour();
+        double minute = timeClock.getMinute();
+        double time = hour + (minute / 60);
         if (!isWorking) {
-            this.clockInTime = timeClock;
+            this.clockInTime = time;
             this.isWorking = true;
             System.out.println(this.getName() + " punched in at: " + timeClock);
         }
         else {
-            Duration duration = Duration.between(clockInTime, timeClock);
-            long hours = duration.toHours();
-            long minutes = duration.toMinutes();
-            double timeWorked = Double.parseDouble(hours + "." + minutes);
-            hoursWorked += timeWorked;
+            hoursWorked += time - clockInTime;
             this.isWorking = false;
             System.out.println(this.getName() + " punched out at: " + timeClock);
         }
