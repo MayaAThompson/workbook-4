@@ -30,10 +30,7 @@ public class Room {
     }
 
     public boolean isAvailable() {
-        if (!isOccupied() && !isDirty()) {
-            return true;
-        }
-        return false;
+        return !dirty && !occupied;
     }
 
     public void setIsOccupied(boolean occupancy) {
@@ -44,5 +41,18 @@ public class Room {
         this.dirty = cleanliness;
     }
     //endregion
+
+    public void checkIn() {
+        this.setIsOccupied(true);
+        this.setIsDirty(true);
+    }
+
+    public void checkOut() {
+        this.setIsOccupied(false);
+    }
+
+    public void cleanRoom() {
+        this.setIsDirty(false);
+    }
 
 }

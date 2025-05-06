@@ -1,5 +1,9 @@
 package com.pluralsight;
 
+import java.time.Duration;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+
 public class Employee {
 
     private int employeeId;
@@ -7,6 +11,8 @@ public class Employee {
     private String department;
     private double payRate;
     private double hoursWorked;
+    private boolean working;
+    private LocalTime clockInTime;
 
     public Employee(int employeeId, String name, String department, double payRate) {
         this.employeeId = employeeId;
@@ -65,6 +71,32 @@ public class Employee {
         }
         return 0;
     }
+
+    private boolean isWorking() {
+        return this.working;
+    }
+
+    private void setIsWorking(boolean isWorking) {
+        this.working = isWorking;
+    }
     //endregion
+
+    public void punchTimeCard(double time) {
+        LocalTime timeClock;
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+        timeClock = LocalTime.parse(Double.toString(time), timeFormatter);
+        if (!this.isWorking()) {
+            this.clockInTime = timeClock;
+            this.setIsWorking(true);
+        }
+        else {
+            Duration duration = Duration.between(clockInTime, timeClock);
+            long hours = duration.toHours();
+            long minutes = duration.toMinutes();
+            double timeWorked = Double.parseDouble(hours + "." + minutes);
+            hoursWorked += timeWorked;
+            this.setIsWorking(false);
+        }
+    }
 
 }

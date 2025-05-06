@@ -6,10 +6,6 @@ public class Reservation {
     private int numberOfNights;
     private boolean weekend;
 
-    public Reservation() {
-
-    }
-
     public Reservation(String roomType, int numberOfNights, boolean weekend) {
         this.roomType = roomType;
         this.numberOfNights = numberOfNights;
@@ -22,6 +18,9 @@ public class Reservation {
     }
 
     public void setRoomType(String roomType) {
+        if(!roomType.equalsIgnoreCase("king") && !roomType.equalsIgnoreCase("double")) {
+            throw new RuntimeException("Invalid room type.");
+        }
         this.roomType = roomType;
     }
 
@@ -42,25 +41,28 @@ public class Reservation {
     }
 
     public double getPrice() {
-        return this.calculatePrice();
+        if (this.roomType.equalsIgnoreCase("king")) {
+            return 139;
+        }
+        else if (this.roomType.equalsIgnoreCase("double")) {
+            return 124;
+        }
+        else {
+            throw new RuntimeException("Invalid Room type");
+        }
     }
 
     public double getReservationTotal() {
-        return this.getPrice() * this. getNumberOfNights();
+        return this.getPrice() * this. getNumberOfNights() * this.weekendModifier();
     }
     //endregion
 
-    private double calculatePrice() {
-        double price = 140.39;
-        if (this.roomType.equalsIgnoreCase("king")) {
-            price = 139;
+    private double weekendModifier() {
+        if(isWeekend()) {
+            return 1.1;
         }
-        else if (this.roomType.equalsIgnoreCase("double")) {
-            price = 124;
+        else {
+            return 1;
         }
-        if (isWeekend()) {
-            price *= 1.1;
-        }
-        return price;
     }
 }
