@@ -10,49 +10,61 @@ class RoomTest {
     void testNormalCheckIn() {
         Room testRoom = new Room(1, false, false);
 
-        testRoom.checkIn();
+        boolean checkInSuccessful = testRoom.checkIn();
 
-        boolean actual = testRoom.isDirty() && testRoom.isOccupied();
-        assertTrue(actual);
+        assertTrue(checkInSuccessful);
     }
 
     @Test
     void testCheckInToDirtyRoom() {
         Room testRoom = new Room(1,false, true);
 
-        testRoom.checkIn();
+        boolean checkInSuccessful = testRoom.checkIn();
 
-        boolean actual = testRoom.isDirty() && !testRoom.isOccupied();
-        assertTrue(actual);
+        assertFalse(checkInSuccessful);
     }
 
     @Test
     void testNormalCheckOut() {
         Room testRoom = new Room(1, true, true);
 
-        testRoom.checkOut();
+        boolean checkOutSuccessful = testRoom.checkOut();
 
-        boolean actual = testRoom.isDirty() && !testRoom.isOccupied();
-        assertTrue(actual);
+        assertTrue(checkOutSuccessful);
+    }
+
+    @Test
+    void testCheckOutEmptyRoom() {
+        Room testRoom = new Room(1, false, true);
+
+        boolean checkOutSuccessful = testRoom.checkOut();
+
+        assertFalse(checkOutSuccessful);
     }
 
     @Test
     void testCleanCheckedOutRoom() {
         Room testRoom = new Room(1, false, true);
 
-        testRoom.cleanRoom();
+        boolean cleanSuccessful = testRoom.cleanRoom();
 
-        boolean actual = !testRoom.isOccupied() && !testRoom.isDirty();
-        assertTrue(actual);
+        assertTrue(cleanSuccessful);
     }
 
     @Test
     void testCleanOccupiedRoom() {
         Room testRoom = new Room(1, true, true);
 
-        testRoom.cleanRoom();
+        boolean cleanSuccessful = testRoom.cleanRoom();
 
-        boolean actual = !testRoom.isOccupied() && !testRoom.isDirty();
-        assertFalse(actual);
+        assertFalse(cleanSuccessful);
+    }
+    @Test
+    void testCleanAlreadyCleanRoom() {
+        Room testRoom = new Room(1, false, false);
+
+        boolean cleanSuccessful = testRoom.cleanRoom();
+
+        assertFalse(cleanSuccessful);
     }
 }

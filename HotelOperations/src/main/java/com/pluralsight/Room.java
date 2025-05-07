@@ -42,26 +42,37 @@ public class Room {
     }
     //endregion
 
-    public void checkIn() {
+    public boolean checkIn() {
         if (isAvailable()) {
             this.setIsOccupied(true);
             this.setIsDirty(true);
+            return true;
         }
         else {
-            System.out.println("This room is not available for check in yet.");
+            System.out.println("This room is not available for check in.");
+            return false;
         }
     }
 
-    public void checkOut() {
-        this.setIsOccupied(false);
+    public boolean checkOut() {
+        if (isOccupied()) {
+            this.setIsOccupied(false);
+            return true;
+        }
+        else {
+            System.out.println("Room already checked out.");
+            return false;
+        }
     }
 
-    public void cleanRoom() {
-        if (!isOccupied()) {
+    public boolean cleanRoom() {
+        if (!isOccupied() && isDirty()) {
             this.setIsDirty(false);
+            return true;
         }
         else {
-            System.out.println("Cannot clean an occupied room.");
+            System.out.println("Cannot clean this room.");
+            return false;
         }
     }
 
