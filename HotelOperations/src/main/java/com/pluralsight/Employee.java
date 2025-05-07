@@ -10,7 +10,7 @@ public class Employee {
     private String name;
     private String department;
     private double payRate;
-    private double hoursWorked;
+    double hoursWorked;
     private boolean isWorking;
     private double clockInTime;
 
@@ -79,6 +79,9 @@ public class Employee {
             isWorking = true;
         }
         else {
+            if (time < clockInTime) {
+                time += 24;
+            }
             hoursWorked += time - clockInTime;
             isWorking = false;
         }
@@ -95,6 +98,9 @@ public class Employee {
             System.out.println(this.getName() + " punched in at: " + timeClock);
         }
         else {
+            if (time < clockInTime) {
+                time += 24;
+            }
             hoursWorked += time - clockInTime;
             this.isWorking = false;
             System.out.println(this.getName() + " punched out at: " + timeClock);

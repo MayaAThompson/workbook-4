@@ -43,8 +43,13 @@ public class Room {
     //endregion
 
     public void checkIn() {
-        this.setIsOccupied(true);
-        this.setIsDirty(true);
+        if (isAvailable()) {
+            this.setIsOccupied(true);
+            this.setIsDirty(true);
+        }
+        else {
+            System.out.println("This room is not available for check in yet.");
+        }
     }
 
     public void checkOut() {
@@ -52,7 +57,12 @@ public class Room {
     }
 
     public void cleanRoom() {
-        this.setIsDirty(false);
+        if (!isOccupied()) {
+            this.setIsDirty(false);
+        }
+        else {
+            System.out.println("Cannot clean an occupied room.");
+        }
     }
 
 }
